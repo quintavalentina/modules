@@ -123,11 +123,13 @@ class MakeMigrationCommand extends MakeCommand
     {
         return str_replace(
             [
+                '{{slug}}',
                 '{{filename}}',
                 '{{classname}}',
                 '{{tablename}}',
             ],
             [
+                strtolower($this->argument('slug')),
                 $this->container['filename'],
                 $this->container['classname'],
                 $this->container['tablename'],

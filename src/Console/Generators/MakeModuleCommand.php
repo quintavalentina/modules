@@ -24,7 +24,7 @@ class MakeModuleCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a new Quintavalentina module and bootstrap it';
+    protected $description = 'Create a new Quinta Valentina module and bootstrap it';
 
     /**
      * Module folders to be created.
@@ -291,6 +291,11 @@ class MakeModuleCommand extends Command
         $version                     = implode('.', [$major, $minor]);
 
         $stubPath = __DIR__.'/../../../resources/stubs/'.$version.'/';
+
+        if (file_exists(config('modules.custom_stubs').'/'.$version.'/')) {
+            $stubPath = config('modules.custom_stubs').'/'.$version.'/';
+        }
+
         $stubName = $this->moduleStubs[$key].'.stub';
 
         return $this->formatContent($this->files->get($stubPath.$stubName));

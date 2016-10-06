@@ -80,12 +80,14 @@ class MakeModelCommand extends MakeCommand
     {
         return str_replace(
             [
+                '{{slug}}',
                 '{{filename}}',
                 '{{path}}',
                 '{{namespace}}',
                 '{{classname}}',
             ],
             [
+                strtolower($this->argument('slug')),
                 $this->container['filename'],
                 $this->container['path'],
                 $this->container['namespace'],
