@@ -120,7 +120,7 @@ class MakeModuleCommand extends Command
         $this->container['version']     = '1.0';
         $this->container['description'] = 'This is the description for the '.$this->container['name'].' module.';
         $this->container['license']     = 'MIT';
-        $this->container['author']      = ' ';
+        $this->container['author']      = 'FPR';
 
         if ($this->option('quick')) {
             return $this->generate();
@@ -140,20 +140,24 @@ class MakeModuleCommand extends Command
     {
         $this->displayHeader('make_module_step_1');
 
+        $this->container['apps']        = $this->ask('Please enter the apps who this module is enabled separated by comma:', 'scp');
         $this->container['name']        = $this->ask('Please enter the name of the module:', $this->container['name']);
         $this->container['slug']        = $this->ask('Please enter the slug for the module:', $this->container['slug']);
         $this->container['version']     = $this->ask('Please enter the module version:', $this->container['version']);
         $this->container['description'] = $this->ask('Please enter the description of the module:', $this->container['description']);
         $this->container['author']      = $this->ask('Please enter the author of the module:', $this->container['author']);
         $this->container['license']     = $this->ask('Please enter the module license:', $this->container['license']);
+        $this->container['order']       = $this->ask('Please enter the module order:', '999');
 
         $this->comment('You have provided the following manifest information:');
+        $this->comment('Apps:        '.$this->container['apps']);
         $this->comment('Name:        '.$this->container['name']);
         $this->comment('Slug:        '.$this->container['slug']);
         $this->comment('Version:     '.$this->container['version']);
         $this->comment('Description: '.$this->container['description']);
         $this->comment('Author:      '.$this->container['author']);
         $this->comment('License:     '.$this->container['license']);
+        $this->comment('Order:       '.$this->container['order']);
 
         if ($this->confirm('Do you wish to continue?')) {
             $this->comment('Thanks! That\'s all we need.');
@@ -209,7 +213,7 @@ class MakeModuleCommand extends Command
             $this->files->makeDirectory($this->module->getPath());
         }
 
-        $this->files->makeDirectory($this->getModulePath($this->container['slug'], true));
+        $this->files->makeDirectory($this->getModulePath(ucfirst($this->container['slug']), true));
 
         foreach ($this->moduleFolders as $folder) {
             $this->files->makeDirectory($this->getModulePath($this->container['slug']).$folder);
@@ -309,8 +313,8 @@ class MakeModuleCommand extends Command
     protected function formatContent($content)
     {
         return str_replace(
-            ['{{slug}}', '{{name}}', '{{namespace}}', '{{version}}', '{{description}}', '{{author}}', '{{license}}', '{{path}}'],
-            [$this->container['slug'], $this->container['name'], $this->container['namespace'], $this->container['version'], $this->container['description'], $this->container['author'], $this->container['license'], $this->module->getNamespace()],
+            ['{{apps}}', '{{order}}', '{{slug}}', '{{name}}', '{{namespace}}', '{{version}}', '{{description}}', '{{author}}', '{{license}}', '{{path}}'],
+            [$this->container['apps'], $this->container['order'], $this->container['slug'], $this->container['name'], $this->container['namespace'], $this->container['version'], $this->container['description'], $this->container['author'], $this->container['license'], $this->module->getNamespace()],
             $content
         );
     }
